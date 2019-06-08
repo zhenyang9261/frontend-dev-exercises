@@ -48,10 +48,10 @@ d3.csv("census.csv", function(error, data) {
         var groupCount = d3.sum(salary_50k, d => d.count);
 
         //console.log(salary_50k)
-        obj['under_50k'] = Math.round(groupCount/totalCount * 100);
+        obj['over_50k'] = Math.round(groupCount/totalCount * 100);
       
-        obj['over_50k'] = 100 - obj['under_50k'];
-      }).entries(education_levels.filter(function(d) { return d.over_50k_text === 'False'; }));
+        obj['under_50k'] = 100 - obj['over_50k'];
+      }).entries(education_levels.filter(function(d) { return d.over_50k_text === 'True'; }));
 
     obj['education_level'] = education_levels[0].education_level;
     obj['total'] = obj['under_50k'] + obj['over_50k'];
@@ -113,7 +113,7 @@ const y = d3.scaleBand()
   .padding(0.1)
 
 var z = d3.scaleOrdinal()
-  .range(["#fe434f", "#00b774"]);
+  .range(["#A9BCF5", "#F79F81"]);
 
 chartGroup.append('g')
   .attr('class', 'axis x-axis')
@@ -164,17 +164,29 @@ chartGroup.append('g')
     .attr('width', d => (x(d[1]) - x(d[0])))
     .order(d3.stackOrderDescending)
 
-  svg.append("g")
-    .attr("class", "legendLinear")
-    .attr("transform", "translate(0,"+(30)+")");
-var legend = d3.legend
-    .shapeWidth(chartHeight/4)
-    .shapePadding(10)
-    .orient('horizontal')
-    .scale(z);
-svg.select(".legendLinear")
-    .call(legend);
+    // Add legend
+  var options = ["True", "False"];
+    var legend = svg.selectAll(".legend")
+                    .data(options.slice())
+                    .enter().append("g")
+                    .attr("class", "legend")
+                    .attr("transform", function(d,i) { return "translate(" + i%2 * 60 + 
+                      "," +
+                      Math.floor(i/2) * 20 + ")"; })
+                    //.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
+    legend.append("rect")
+          .attr("x", chartWidth - 18)
+          .attr("width", 18)
+          .attr("height", 18)
+          .style("fill", z);
+
+    legend.append("text")
+          .attr("x", chartWidth - 24)
+          .attr("y", 9)
+          .attr("dy", ".6em")
+          .style("text-anchor", "end")
+          .text(function(d) { return d;});
 
 
 

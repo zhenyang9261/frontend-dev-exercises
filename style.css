@@ -1,13 +1,21 @@
 html,
 body {
-  padding: 0;
+  padding: 10;
   margin: 0;
 }
-
-.bar {
+/*
+.rect {
   fill: orange;
 }
 
-.bar:hover {
+.rect:hover {
   fill: green;
+}
+*/
+
+.legend {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 60%;
+  padding: 5;
+  margin: 5;
 }
