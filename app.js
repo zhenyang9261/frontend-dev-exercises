@@ -16,7 +16,7 @@ var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
 var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
 
 // Select body, append SVG area to it, and set the dimensions
-var svg = d3.select("body")
+var svg = d3.select("#education_level")
   .append("svg")
   .attr("height", svgHeight)
   .attr("width", svgWidth);
@@ -29,13 +29,12 @@ var chartGroup = svg.append("g")
 d3.csv("census.csv", function(error, data) {
   if (error) throw error;
 
-  //console.log(data[0]);
-
+  // Convert string to number
   data.forEach(function(d) {
     d.count = +d.count;
   });
 
-  // Compose dataset
+  // Compose dataset, group by education_level, calculate the total counts of over 50K and under 50K
   const nest = d3.nest()
   .key(d => d.education_level)
   .rollup(education_levels => {
@@ -86,29 +85,31 @@ d3.csv("census.csv", function(error, data) {
 //nest = nest.sort(function(a,b) {
 //  return a.value.over_50k - b.value.over_50k; });
 
-// First create the array of keys/net_total so that we can sort it:
-// var sort_array = [];
-// for (var key in nest) {
-//     sort_array.push({key:key,value:nest[key].over_50k});
-// }
-// 
-// // Now sort it:
-// sort_array.sort(function(x,y){return x.over_50k - y.over});
-// 
-// // Now process that object with it:
-// for (var i=0;i<sort_array.length;i++) {
-//     var item = nest[sort_array[i].key];
-// 
-//     
-// }
+// First create the array of keys/over_50k so that we can sort it:
+ var sort_array = [];
+ for (var key in nest) {
+     sort_array.push({key:key,value:nest[key].value.over_50k});
+ }
+ console.log(sort_array)
+ 
+ // Now sort it:
+ sort_array = sort_array.sort(function(x,y){return  x.value - y.value});
+ console.log(sort_array)
 
-console.log(nest);
+ var sorted_nest = [];
+ // Now process that object with it:
+ for (var i=0;i<sort_array.length;i++) {
+     var item = nest[sort_array[i].key];
+      sorted_nest.push(item);
+ }
+
+console.log(sorted_nest);
 const x = d3.scaleLinear()
   .domain([0, d3.max(nest, d => d.value.total)])
   .range([1, chartWidth]).nice()
 
 const y = d3.scaleBand()
-  .domain(nest.map(d => d.key))
+  .domain(sorted_nest.map(d => d.key))
   .range([chartHeight, 0])
   .padding(0.1)
 
@@ -151,7 +152,7 @@ var educationLabel = labelsYGroup.append("text")
 
 chartGroup.append('g')
     .selectAll('g')
-  .data(d3.stack().keys(['under_50k', 'over_50k'])(nest.map(d => d.value)))
+  .data(d3.stack().keys(['over_50k', 'under_50k'])(sorted_nest.map(d => d.value)))
     
     .enter().append("g")
     .attr("fill", function(d) { return z(d.key); })
