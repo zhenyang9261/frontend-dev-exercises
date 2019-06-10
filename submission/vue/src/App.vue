@@ -12,7 +12,7 @@
 <script>
 import EduChart from './components/EduChart.vue'
 import RaceChart from './components/RaceChart.vue'
-import SwitchButton from './components/SwitchButton.vue'
+
 import * as d3 from 'd3'
 import JsonData from './census.json'
 
