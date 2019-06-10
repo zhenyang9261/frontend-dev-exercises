@@ -62,6 +62,28 @@ function sortData (data) {
   return sorted_data;
 }
 
+// gridlines function
+function make_gridlines(x, y) {		
+  // add the X gridlines
+  chartGroup.append("g")			
+  .attr("class", "grid")
+  .attr("transform", "translate(0," + chartHeight + ")")
+  .call(d3.axisBottom(x)
+      .ticks(10)
+      .tickSize(-chartHeight)
+      .tickFormat("")
+  )
+
+  // add the Y gridlines
+  /*chartGroup.append("g")			
+    .attr("class", "grid")
+    .call(d3.axisLeft(y)
+        .ticks(5)
+        .tickSize(-chartWidth)
+        .tickFormat("")
+    ) */
+}
+
 // Draw Education Level chart
 function drawEdu (data) {
 
@@ -129,6 +151,9 @@ function drawEdu (data) {
       .attr('y', d => y(d.data.education_level))
       .attr('height', y.bandwidth())
       .attr('width', d => (x(d[1]) - x(d[0])))
+
+  // Add grid lines
+  make_gridlines(x, y);
 }
 
 function drawRace (data) {
@@ -196,6 +221,9 @@ function drawRace (data) {
       .attr('y', d => y(d.data.race))
       .attr('height', y.bandwidth())
       .attr('width', d => (x(d[1]) - x(d[0])))
+
+  // Add grid lines
+  make_gridlines(x, y);
 }
 
 // Add legend

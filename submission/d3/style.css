@@ -3,15 +3,15 @@ body {
   padding: 10;
   margin: 0;
 }
-/*
-.rect {
-  fill: orange;
+.grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.9;
+  shape-rendering: crispEdges;
 }
 
-.rect:hover {
-  fill: green;
+.grid path {
+  stroke-width: 0;
 }
-*/
 
 .legend {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
