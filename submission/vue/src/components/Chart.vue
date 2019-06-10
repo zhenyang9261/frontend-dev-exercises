@@ -1,14 +1,5 @@
 <template>
   <div class="chart">
-    <!-- <div ref="div-ref"> </div>
-    <svg
-      :heigh='this.svgHeight'
-      :width='this.svgWidth'
-    >
-    <g transform="translate(150,30)" ref="g-ref" ></g> 
-      
-        
-    </svg> -->
     
   </div>
 </template>
@@ -21,41 +12,39 @@ export default {
   props: {
     jsonData: Array
   },
+
   data() {
     return {
-      svgHeight: 1360,
-      svgWidth: 1000,
+      svgHeight: 600,
+      svgWidth: 960,
       chartMargin: {
         top: 30,
         right: 30,
         bottom: 30,
-        left: 150
+        left: 140
       },
-      chartWidth: 780,
-        //this.svgWidth - this.chartMargin.left - this.chartMargin.right,
-      chartHeight: 440
-        //this.svgHeight - this.chartMargin.top - this.chartMargin.bottom
-      //chartGroup: "" //this.$refs.g-ref
+      chartWidth: 790,
+      chartHeight: 540
     }
   },
-  created() {
-    this.z = d3.scaleOrdinal()
-            .range(["#A9BCF5", "#F79F81"]);
-  },
-  methods: {
-    eduChart() {
-      //var chartGroup = this.$refs["g-ref"];
-      //console.log(chartGroup)
-      var z = d3.scaleOrdinal()
-            .range(["#A9BCF5", "#F79F81"]);
 
+  methods: {
+    // Draw Education chart
+    eduChart() {
+      
+      // Color of the bars
+      var z = d3.scaleOrdinal()
+            .range(["lightblue", "#F79F81"]);
+
+      // Defind the canvas
       var svg_edu = d3.select(".chart")
         .append("svg")
         .attr("height", this.svgHeight)
         .attr("width", this.svgWidth);
 
+      // Define the chart group
       var chartGroup = svg_edu.append("g")
-      .attr("transform", `translate(${150}, ${30})`);
+      .attr("transform", `translate(${this.chartMargin.left}, ${this.chartMargin.top})`);
 
       // Define x axis scale
       const x = d3.scaleLinear()
@@ -80,10 +69,11 @@ export default {
         .call(d3.axisLeft(y).ticks(null, 's'))
 
       // Create x- axis labels
-        var labelX = chartGroup.append("g")
+      var labelX = chartGroup.append("g")
           .attr("transform", `translate(${this.chartWidth / 2}, ${this.chartHeight + 20})`);
 
-        labelX.append("text")
+      // Attach x axis
+      labelX.append("text")
           .attr("x", 0)
           .attr("y", 10)
           .attr("dx", "0.9em")
@@ -122,6 +112,8 @@ export default {
           this.addLegend(svg_edu);
 
     },
+
+    // Add Legend to the chart
     addLegend(svg) {
       var z = d3.scaleOrdinal()
             .range(["#A9BCF5", "#F79F81"]);
@@ -135,17 +127,21 @@ export default {
 
       legend.append("rect")
             .attr("x", this.chartWidth - 18)
-            .attr("width", 18)
-            .attr("height", 18)
+            .attr("width", 10)
+            .attr("height", 14)
             .style("fill", z);
 
       legend.append("text")
             .attr("x", this.chartWidth - 24)
-            .attr("y", 9)
+            .attr("y", 6)
             .attr("dy", ".6em")
             .style("text-anchor", "end")
             .text(function(d) { return d;});
     },
+
+    // Sort given data 
+    // Data is in the format of array-dictionary of dictionary
+    // [{key: '', value: {x: '', y: '', z}}]
     sortData (data) {
 
       // First create the array of keys/over_50k so that we can sort it:
@@ -193,17 +189,14 @@ export default {
       .entries(this.jsonData);
       var sorted = this.sortData(result_data);
       return sorted;
-    },
-    output() {
-      //return this.test()
     }
   },
-    mounted() {
-      //console.log("App loaded");
-     
-      this.eduChart();
-    }
+  mounted() {
+   
+    // Load the Education chart
+    this.eduChart();
   }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
