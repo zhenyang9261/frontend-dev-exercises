@@ -3,7 +3,7 @@
     
     <EduChart :jsonData="JsonData" v-show="isEdu"/>
     <RaceChart :jsonData="JsonData" v-show="!isEdu"/> 
-    <!-- <SwitchButton :isEdu="isEdu"/>   -->
+    
     <button class='toggleButton' v-on:click="isEdu = !isEdu">Toggle Charts</button>
     
   </div>
@@ -58,4 +58,15 @@ export default {
   display: inline-block;
   font-size: 1.5em;
 }
+
+.grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.9;
+  shape-rendering: crispEdges;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
 </style>

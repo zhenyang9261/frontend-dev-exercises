@@ -111,8 +111,33 @@ export default {
           .attr('height', y.bandwidth())
           .attr('width', d => (x(d[1]) - x(d[0])))
 
-          this.addLegend(svg_race);
+      // Add gridlines
+      this.make_gridlines(chartGroup, x, y);
 
+      // Add Legend
+      this.addLegend(svg_race);
+
+    },
+
+    // Gridlines
+    make_gridlines(chartGroup, x, y) {		
+      // add the X gridlines
+      chartGroup.append("g")			
+      .attr("class", "grid")
+      .attr("transform", "translate(0," + this.chartHeight + ")")
+      .call(d3.axisBottom(x)
+          .ticks(10)
+          .tickSize(-this.chartHeight)
+          .tickFormat("")
+      )
+       // add the Y gridlines
+      /*chartGroup.append("g")			
+        .attr("class", "grid")
+        .call(d3.axisLeft(y)
+            .ticks(5)
+            .tickSize(-chartWidth)
+            .tickFormat("")
+        ) */
     },
 
     // Add Legend to the chart
