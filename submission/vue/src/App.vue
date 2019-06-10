@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     
-    <Chart :jsonData="JsonData" v-show="isEdu"/>
+    <EduChart :jsonData="JsonData" v-show="isEdu"/>
     <RaceChart :jsonData="JsonData" v-show="!isEdu"/> 
     <!-- <SwitchButton :isEdu="isEdu"/>   -->
     <button class='toggleButton' v-on:click="isEdu = !isEdu">Toggle Charts</button>
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Chart from './components/Chart.vue'
+import EduChart from './components/EduChart.vue'
 import RaceChart from './components/RaceChart.vue'
 import SwitchButton from './components/SwitchButton.vue'
 import * as d3 from 'd3'
@@ -19,7 +19,7 @@ import JsonData from './census.json'
 export default {
   name: 'app',
   components: {
-    Chart,
+    EduChart,
     RaceChart
   },
   data() {

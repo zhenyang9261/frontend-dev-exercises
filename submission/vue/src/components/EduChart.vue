@@ -1,7 +1,7 @@
 <template>
-  <div class="racechart">
+  <div class="educhart">
     <div class="title">
-      <h3> Race vs Percentage of Salary Over 50K </h3>
+      <h3> Education Level vs Percentage of Salary Over 50K </h3>
     </div>
     <div class="chart">
     </div>
@@ -12,7 +12,7 @@
 import * as d3 from 'd3'
 
 export default {
-  name: 'RaceChart',
+  name: 'EduChart',
   props: {
     jsonData: Array
   },
@@ -31,31 +31,31 @@ export default {
   },
 
   methods: {
-    // Draw Race chart
-    raceChart() {
+    // Draw Education chart
+    eduChart() {
       
       // Color of the bars
       var z = d3.scaleOrdinal()
             .range(["lightblue", "#F79F81"]);
 
       // Defind the canvas
-      var svg_race = d3.select(".racechart")
+      var svg_edu = d3.select(".chart")
         .append("svg")
         .attr("height", this.svgHeight)
         .attr("width", this.svgWidth);
 
       // Define the chart group
-      var chartGroup = svg_race.append("g")
+      var chartGroup = svg_edu.append("g")
       .attr("transform", `translate(${this.chartMargin.left}, ${this.chartMargin.top})`);
 
       // Define x axis scale
       const x = d3.scaleLinear()
-        .domain([0, d3.max(this.raceData, d => d.value.total)])
+        .domain([0, d3.max(this.eduData, d => d.value.total)])
         .range([1, this.chartWidth]).nice()
 
       // Define y axis scale
       const y = d3.scaleBand()
-        .domain(this.raceData.map(d => d.key))
+        .domain(this.eduData.map(d => d.key))
         .range([this.chartHeight, 0])
         .padding(0.1)
 
@@ -92,14 +92,14 @@ export default {
        .attr("y", 0)
        .attr("x", 0)
        .attr("dy", "0.9em")
-       .attr("value", "race") // value to grab for event listener
+       .attr("value", "education_level") // value to grab for event listener
        .classed("active", true)
-       .text("Race");
+       .text("Education Level");
 
       // Draw chart
       chartGroup.append('g')
           .selectAll('g')
-        .data(d3.stack().keys(['over_50k', 'under_50k'])(this.raceData.map(d => d.value)))
+        .data(d3.stack().keys(['over_50k', 'under_50k'])(this.eduData.map(d => d.value)))
 
           .enter().append("g")
           .attr("fill", function(d) { return z(d.key); })
@@ -107,11 +107,11 @@ export default {
         .data(d => d)
           .enter().append("rect")
           .attr('x', d => x(d[0]))
-          .attr('y', d => y(d.data.race))
+          .attr('y', d => y(d.data.education_level))
           .attr('height', y.bandwidth())
           .attr('width', d => (x(d[1]) - x(d[0])))
 
-          this.addLegend(svg_race);
+          this.addLegend(svg_edu);
 
     },
 
@@ -143,10 +143,10 @@ export default {
 
     // Sort given data 
     // Data is in the format of array-dictionary of dictionary
-    // [{key: '', value: {x: '', y: '', z}}]
+    // [{key: '', value: {x: '', y: '', z: ''}}]
     sortData (data) {
 
-      // First create the array of keys/over_50k so that we can sort it:
+      // First create the array of keys/over_50k so that we can sort it.
       var sort_array = [];
       for (var key in data) {
         sort_array.push({key:key,value:data[key].value.over_50k});
@@ -155,7 +155,7 @@ export default {
       // Now sort it:
       sort_array = sort_array.sort(function(x,y){return  x.value - y.value});
 
-      // Now compose the result array:
+      // Now compose the result array.
       var sorted_data = [];
       for (var i=0;i<sort_array.length;i++) {
         var item = data[sort_array[i].key];
@@ -171,17 +171,17 @@ export default {
     chartHeight() {
       return this.svgHeight - this.chartMargin.top - this.chartMargin.bottom; //540
     }, 
-    raceData() {
+    eduData() {
       
-      // Compose dataset step 1, group by race, calculate the total count for each group
+      // Compose dataset step 1, group by education_level, calculate the total count for each group
       // Compose dataset step 2, in each group, filter data by "over_50k", then calculate the total counts. 
       // "over_50k": total count in step 2 divided by total count in step 1, then round to integer
       // "under_50k": 100(percent) - "over_50k"
-       var result_data = d3.nest()
-      .key(d => d.race)
-      .rollup(races => {
+      var result_data = d3.nest()
+      .key(d => d.education_level)
+      .rollup(education_levels => {
         var obj = {};
-        var totalCount = d3.sum(races, d => d.count);
+        var totalCount = d3.sum(education_levels, d => d.count);
 
         d3.nest()
           .key(d => d.over_50k_text)
@@ -191,24 +191,25 @@ export default {
             obj['over_50k'] = Math.round(groupCount/totalCount * 100);
           
             obj['under_50k'] = 100 - obj['over_50k'];
-          }).entries(races.filter(function(d) { return d.over_50k === 1; }));
+          }).entries(education_levels.filter(function(d) { return d.over_50k === 1; }));
 
-        obj['race'] = races[0].race;
+        obj['education_level'] = education_levels[0].education_level;
         obj['total'] = obj['under_50k'] + obj['over_50k'];
         
         return obj
       })
       .entries(this.jsonData);
 
-      // Sort the data for display
+      // Sort the result array for display
       var sorted = this.sortData(result_data);
+
       return sorted;
     }
   },
   mounted() {
    
-    // Load the Race chart
-    this.raceChart();
+    // Load the Education chart
+    this.eduChart();
   }
 }
 </script>
