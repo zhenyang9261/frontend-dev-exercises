@@ -1,12 +1,17 @@
 <template>
   <div id="app">
-    <Chart :jsonData="JsonData"/>
-    <SwitchButton />
+    
+    <Chart :jsonData="JsonData" v-show="isEdu"/>
+    <RaceChart :jsonData="JsonData" v-show="!isEdu"/> 
+    <!-- <SwitchButton :isEdu="isEdu"/>   -->
+    <button class='toggleButton' v-on:click="isEdu = !isEdu">Toggle Charts</button>
+    
   </div>
 </template>
 
 <script>
 import Chart from './components/Chart.vue'
+import RaceChart from './components/RaceChart.vue'
 import SwitchButton from './components/SwitchButton.vue'
 import * as d3 from 'd3'
 import JsonData from './census.json'
@@ -15,27 +20,17 @@ export default {
   name: 'app',
   components: {
     Chart,
-    SwitchButton
+    RaceChart
   },
   data() {
     return {
       //census_data: []
-      JsonData
+      JsonData,
+      isEdu: true
     }
   },
-  mounted: function() {
-    /*fetch('./test.json', {
-      method: 'get'
-    })
-    //d3.csv('./census.csv')
-    .then((response) => {
-      console.log(response.json())
-      return response
-    })
-    .then((csvData) => {
-      this.census_data = csvData
-    }) */
-    //this.fetchData()
+  mounted() {
+   this.isEdu = true;
 
   }
 }
@@ -49,5 +44,18 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.toggleButton {
+
+  background-color: rgba(95, 146, 54, 0.904); /* Green */
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  margin-top: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.5em;
 }
 </style>
