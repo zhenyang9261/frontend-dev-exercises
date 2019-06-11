@@ -1,7 +1,6 @@
 ### RTI CDS Frontend Developer Exercise Submission 
 
-This submission contains two parts. One implementation is built with D3, the other is Vue.js and D3. 
-Following are the instructions to run the application.
+This submission contains two folders. The implemenation in "vue" folder is the final deliverable. The implementation in "d3" folder was built in an early trial stage, but is still a fully executable version. Below are the instructions to run.  
 
 ----
 

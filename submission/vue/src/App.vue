@@ -59,6 +59,12 @@ export default {
   font-size: 1.5em;
 }
 
+.toggleButton:hover {
+  background-color: white;
+  color: rgba(95, 146, 54, 0.904); /* Green */
+  cursor:pointer;
+}
+
 .grid line {
   stroke: lightgrey;
   stroke-opacity: 0.9;
