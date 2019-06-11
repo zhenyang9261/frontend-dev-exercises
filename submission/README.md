@@ -2,6 +2,7 @@
 
 This submission contains two parts. One implementation is built with D3, the other is Vue.js and D3. 
 Following are the instructions to run the application.
+
 ----
 
 ### Vue 
