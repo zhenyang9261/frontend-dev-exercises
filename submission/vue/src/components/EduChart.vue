@@ -39,7 +39,7 @@ export default {
       var z = d3.scaleOrdinal()
             .range(["lightblue", "#F79F81"]);
 
-      // Defind the canvas
+      // Define the canvas
       var svg_edu = d3.select(".chart")
         .append("svg")
         .attr("height", this.svgHeight)
@@ -75,7 +75,7 @@ export default {
       var labelX = chartGroup.append("g")
           .attr("transform", `translate(${this.chartWidth / 2}, ${this.chartHeight + 20})`);
 
-      // Attach x axis
+      // Attach x axis labels
       labelX.append("text")
           .attr("x", 0)
           .attr("y", 10)
@@ -88,6 +88,7 @@ export default {
       var labelsYGroup = chartGroup.append("g")
        .attr("transform", `translate(${0-this.chartMargin.left/4*3}, ${this.chartHeight/2})`);
 
+      // Attach y axis labels
       labelsYGroup.append("text")
        .attr("transform", "rotate(-90)")
        .attr("y", 0)
@@ -106,6 +107,7 @@ export default {
           .attr("fill", function(d) { return z(d.key); })
           .selectAll("rect")
         .data(d => d)
+
           .enter().append("rect")
           .attr('x', d => x(d[0]))
           .attr('y', d => y(d.data.education_level))
@@ -115,7 +117,7 @@ export default {
       // Add gridlines
       utilFunc.makeXgridlines(chartGroup, this.chartHeight, x);
 
-      // Add Legend
+      // Add Legends
       utilFunc.addLegend(svg_edu, z, this.chartWidth);
 
     }
@@ -133,12 +135,15 @@ export default {
       // Compose dataset step 2, in each group, filter data by "over_50k", then calculate the total counts. 
       // "over_50k": total count in step 2 divided by total count in step 1, then round to integer
       // "under_50k": 100(percent) - "over_50k"
+
+      // Step 1
       var result_data = d3.nest()
       .key(d => d.education_level)
       .rollup(education_levels => {
         var obj = {};
         var totalCount = d3.sum(education_levels, d => d.count);
 
+        // Step 2 
         d3.nest()
           .key(d => d.over_50k_text)
           .rollup(salary_50k => {
@@ -176,6 +181,7 @@ h3 {
   margin: 1.5em 0;
   text-align: center;
   font-weight: bold;
+  color: #DF7401;
 }
 
 </style>

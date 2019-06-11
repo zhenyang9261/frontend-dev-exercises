@@ -4,16 +4,17 @@
     <EduChart :jsonData="JsonData" v-show="isEdu"/>
     <RaceChart :jsonData="JsonData" v-show="!isEdu"/> 
     
+    <!-- Toggle between the 2 components when button is clicked --> 
     <button class='toggleButton' v-on:click="isEdu = !isEdu">Toggle Charts</button>
     
   </div>
 </template>
 
 <script>
+import * as d3 from 'd3'
+
 import EduChart from './components/EduChart.vue'
 import RaceChart from './components/RaceChart.vue'
-
-import * as d3 from 'd3'
 import JsonData from './census.json'
 
 export default {
@@ -24,7 +25,6 @@ export default {
   },
   data() {
     return {
-      //census_data: []
       JsonData,
       isEdu: true
     }

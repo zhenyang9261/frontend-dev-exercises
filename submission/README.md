@@ -26,8 +26,3 @@ It is assumed that Python is installed on the computer and can run local http se
 3. Run local http server: python -m http.server 8000
 4. Open up a browser, go to http://localhost:8000
 ----
-
-### ToDo's
-
-1. Make the charts responsive.
-----
