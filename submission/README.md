@@ -1,4 +1,4 @@
-## RTI CDS Frontend Developer Exercise Submission 
+### RTI CDS Frontend Developer Exercise Submission 
 
 This submission contains two parts. One implementation is built with D3, the other is Vue.js and D3. 
 Following are the instructions to run the application.
@@ -19,7 +19,7 @@ It is assumed that Vue is installed on the computer already. If Vue is not insta
 
 ### D3
 
-It is assumed that Python is installed on the computer and can run local http server. Please refer to [Running a simple local HTTP server](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server) for reference.
+It is assumed that Python is installed on the computer and can run local http server. Please visit [Running a simple local HTTP server](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server) for reference.
 1. Open up a git bash in the local repository folder.
 2. Enter folder: cd submission/d3 
 3. Run local http server: python -m http.server 8000
